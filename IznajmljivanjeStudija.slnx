@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Common/Common.csproj" Id="9ad5ae03-88e3-4d16-aaae-d532968479db" />
+  <Project Path="DBBroker/DBBroker.csproj" Id="2c613b23-f941-4bf6-be77-d43de1c2ec83" />
+  <Project Path="Forme/Forme.csproj" />
+  <Project Path="Server/Server.csproj" />
+  <Project Path="SistemskeOperacije/SistemskeOperacije.csproj" Id="45f126f5-b12e-4626-8fb3-56388caf6565" />
+</Solution>
