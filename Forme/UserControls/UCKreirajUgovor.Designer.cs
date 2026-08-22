@@ -99,7 +99,7 @@
             btnOtkazi.Name = "btnOtkazi";
             btnOtkazi.Size = new Size(151, 29);
             btnOtkazi.TabIndex = 6;
-            btnOtkazi.Text = "Otkazi";
+            btnOtkazi.Text = "Obriši";
             btnOtkazi.UseVisualStyleBackColor = true;
             // 
             // dgvStavke

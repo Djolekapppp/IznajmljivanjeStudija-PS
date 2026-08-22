@@ -44,7 +44,6 @@
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             dgvBendovi = new DataGridView();
             btnVratiBendove = new Button();
-            btnObrisiBend = new Button();
             btnPromeniBend = new Button();
             btnPretraziBend = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvBendovi).BeginInit();
@@ -183,15 +182,6 @@
             btnVratiBendove.Text = "Vrati Bendove";
             btnVratiBendove.UseVisualStyleBackColor = true;
             // 
-            // btnObrisiBend
-            // 
-            btnObrisiBend.Location = new Point(766, 343);
-            btnObrisiBend.Name = "btnObrisiBend";
-            btnObrisiBend.Size = new Size(201, 45);
-            btnObrisiBend.TabIndex = 27;
-            btnObrisiBend.Text = "Obriši Bend";
-            btnObrisiBend.UseVisualStyleBackColor = true;
-            // 
             // btnPromeniBend
             // 
             btnPromeniBend.Location = new Point(559, 343);
@@ -216,7 +206,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(btnPretraziBend);
             Controls.Add(btnPromeniBend);
-            Controls.Add(btnObrisiBend);
             Controls.Add(btnVratiBendove);
             Controls.Add(dgvBendovi);
             Controls.Add(label7);

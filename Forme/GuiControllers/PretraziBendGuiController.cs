@@ -144,15 +144,15 @@ namespace Forme.GuiControllers
             ObrisiBend();
         }
         
-        private void VratiBendove() 
+        private List<Bend> VratiBendove() 
         {
             Zanr zanr = ucPretraziBend.cbZanr.SelectedItem as Zanr;
+            string condition = "";
             if (zanr == null)
             {
                 zanr = new Zanr() { Id = -1 };
             }
 
-            string condition = "";
             if (ucPretraziBend.txtNaziv.Text != "")
             {
                 condition += $"NazivBend = '{ucPretraziBend.txtNaziv.Text}' AND ";
@@ -200,6 +200,7 @@ namespace Forme.GuiControllers
                 ucPretraziBend.dgvBendovi.ReadOnly = true;
                 ucPretraziBend.dgvBendovi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 ucPretraziBend.dgvBendovi.MultiSelect = false;
+                return bendovi;
             }
             catch (Exception ex)
             {
@@ -211,7 +212,15 @@ namespace Forme.GuiControllers
         {
             try
             {
-                VratiBendove();
+                List<Bend> bendovi = VratiBendove();
+                if (bendovi.Count == 0)
+                {
+                    MessageBox.Show("Sistem ne moze da nadje bendove po zadatim kriterijumima", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Sistem je nasao bendove po zadatim kriterijumima", "Uspešno", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch 
             {

@@ -72,7 +72,7 @@ namespace Forme.GuiControllers
                         .FindIndex(b => b.Id == ugovor.Bend.Id);
 
                 ucKreirajUgovor.txtZaposleni.Text = ugovor.Zaposleni.Ime;
-                ucKreirajUgovor.txtIznos.Text = ugovor.UkupnaCena.ToString();
+                RefreshIznos();
 
                 PodesiDgvStavke();
 
@@ -91,7 +91,7 @@ namespace Forme.GuiControllers
 
         private void DgvStavke_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.RowIndex < ugovor.StavkeUgovora.Count)
+            if (ugovor != null && e.RowIndex >= 0 && e.RowIndex < ugovor.StavkeUgovora.Count)
             {
                 StavkaUgovora stavka = ugovor.StavkeUgovora[e.RowIndex];
                 ShowStavkaUC(FormMode.Edit, ugovor, stavka);
@@ -153,11 +153,12 @@ namespace Forme.GuiControllers
 
                 if (ugovor.StavkeUgovora.Count == 0)
                 {
-                    MessageBox.Show("Ne mozete sacuvati ugovor bez stavki!", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Ne mozete sacuvati ugovor bez stavki", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // If this is an existing ugovor (has Id), update it; otherwise create it
+                RefreshIznos();
+
                 if (ugovor.Id > 0)
                 {
                     Komunikacija.Instance.PromeniUgovor(ugovor);
@@ -213,6 +214,7 @@ namespace Forme.GuiControllers
                 ucKreirajUgovor.btnSacuvajUgovor.Enabled = true;
                 ucKreirajUgovor.btnOtkazi.Enabled = true;
                 PodesiDgvStavke();
+                RefreshIznos();
                 ShowStavkaUC(FormMode.Add, ugovor);
             }
             catch (Exception ex)
@@ -282,6 +284,21 @@ namespace Forme.GuiControllers
             ucKreirajUgovor.txtIznos.Enabled = false;
 
             ucKreirajUgovor.txtZaposleni.Text = ulogovaniZaposleni.Ime;
+        }
+
+        private void RefreshIznos()
+        {
+            if (ugovor != null)
+            {
+                // Calculate total from stavke
+                double ukupnaCena = 0;
+                foreach (var stavka in ugovor.StavkeUgovora)
+                {
+                    ukupnaCena += stavka.Iznos;
+                }
+                ugovor.UkupnaCena = ukupnaCena;
+                ucKreirajUgovor.txtIznos.Text = ugovor.UkupnaCena.ToString();
+            }
         }
     }
 }

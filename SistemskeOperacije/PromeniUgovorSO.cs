@@ -38,7 +38,7 @@ namespace SistemskeOperacije
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"Neuspešno dodavanje stavke, {stavka.RB}, {stavka.Studio.Naziv}");
+                    throw new Exception($"Neuspešno dodavanje stavke, {stavka.RB}, {stavka.Studio.Naziv}, {ex.Message}");
                         
                 }
             }

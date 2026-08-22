@@ -61,7 +61,7 @@ namespace Forme.GuiControllers
 
         internal void ShowUbaciTerminDezurstvaPanel(object? sender, EventArgs e)
         {
-            frmGlavna.ChangePanel(KategorijaRestoranaController.Instance.CreateUbaciKategorijaRestorana());
+            frmGlavna.ChangePanel(KreirajTerminDezurstvaGuiController.Instance.CreateUbaciTerminDezurstva());
         }
 
         internal void ShowPretraziUgovorPanel(object? sender, EventArgs e)

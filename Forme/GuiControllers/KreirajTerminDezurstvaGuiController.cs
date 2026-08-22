@@ -8,28 +8,28 @@ using System.Threading.Tasks;
 
 namespace Forme.GuiControllers
 {
-    internal class KategorijaRestoranaController
+    internal class KreirajTerminDezurstvaGuiController
     {
-        private static KategorijaRestoranaController instance;
-        public static KategorijaRestoranaController Instance
+        private static KreirajTerminDezurstvaGuiController instance;
+        public static KreirajTerminDezurstvaGuiController Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new KategorijaRestoranaController();
+                    instance = new KreirajTerminDezurstvaGuiController();
                 }
                 return instance;
             }
         }
 
-        private KategorijaRestoranaController()
+        private KreirajTerminDezurstvaGuiController()
         {
         }
 
         private UCUbaciTerminDezurstva ucUbaciTerminDezurstva;
 
-        internal Control CreateUbaciKategorijaRestorana()
+        internal Control CreateUbaciTerminDezurstva()
         {
             ucUbaciTerminDezurstva = new UCUbaciTerminDezurstva();
             ucUbaciTerminDezurstva.cbSmena.DataSource = Enum.GetValues(typeof(Smena));

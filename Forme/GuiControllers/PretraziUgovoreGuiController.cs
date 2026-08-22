@@ -107,7 +107,7 @@ namespace Forme.GuiControllers
 
                 ucPretraziUgovor.dtpDatumSklapanja.Checked = false;
             }
-            catch (Exception ex)
+            catch 
             {
                 MessageBox.Show(
                     "Sistem ne moze da ucita podatke",
@@ -146,13 +146,13 @@ namespace Forme.GuiControllers
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Sistem ne moze da nadje ugovor: " + ex.Message, "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Sistem ne moze da nadje ugovor", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Morate na pocetku izabrati ugovor iz tabele!", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Morate izabrati ugovor iz tabele", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -268,11 +268,11 @@ namespace Forme.GuiControllers
                         }
 
                         MainCoordinator.Instance.ShowPromeniUgovorPanel(sender, e, fullyLoadedUgovor);
-                        MessageBox.Show("Sistem je ucitao ugovor za izmenu", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Sistem je našao ugovor za izmenu", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    catch (Exception ex)
+                    catch 
                     {
-                        MessageBox.Show("Sistem ne moze da ucita ugovor: " + ex.Message, "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Sistem ne može da nađe ugovor", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -358,9 +358,9 @@ namespace Forme.GuiControllers
                 ucPretraziUgovor.dgvUgovor.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 ucPretraziUgovor.dgvUgovor.MultiSelect = false;
             }
-            catch (Exception ex)
+            catch 
             {
-                MessageBox.Show("Sistem ne moze da nadje ugovore: " + ex.Message, "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Sistem ne moze da nadje ugovore po zadatim kriterijumima", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void BtnVratiUgovore_Click(object? sender, EventArgs e)
@@ -370,16 +370,16 @@ namespace Forme.GuiControllers
                 VratiUgovore();
                 if (ugovori != null && ugovori.Count > 0)
                 {
-                    MessageBox.Show($"Sistem je nasao {ugovori.Count} ugovor(a) po zadatim kriterijumima", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Sistem je nasao  ugovore po zadatim kriterijumima", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Sistem nije nasao ugovore po zadatim kriterijumima", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Sistem ne može da nađe ugovore po zadatim kriterijumima", "Obavestenje", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (Exception ex)
+            catch 
             {
-                MessageBox.Show("Sistem ne moze da nadje ugovore: " + ex.Message, "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Sistem ne može da nađe ugovore po zadatim kriterijumima", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

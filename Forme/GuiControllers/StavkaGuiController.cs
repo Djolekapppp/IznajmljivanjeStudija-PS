@@ -47,11 +47,17 @@ namespace Forme.GuiControllers
             ucDodajStavku.btnOmoguciIzmenu.Click -= BtnOmoguciIzmenu_Click;
             ucDodajStavku.btnIzmeniStavku.Click -= BtnIzmeniStavku_Click;
             ucDodajStavku.btnDodajStavku.Click -= BtnDodajStavku_Click;
+            ucDodajStavku.cbStudio.SelectedIndexChanged -= CbStudio_SelectedIndexChanged;
+            ucDodajStavku.txtVremeOd.TextChanged -= TxtVremeOd_TextChanged;
+            ucDodajStavku.txtVremeDo.TextChanged -= TxtVremeDo_TextChanged;
 
             ucDodajStavku.btnUkloniStavku.Click += BtnUkloniStavku_Click;
             ucDodajStavku.btnOmoguciIzmenu.Click += BtnOmoguciIzmenu_Click;
             ucDodajStavku.btnIzmeniStavku.Click += BtnIzmeniStavku_Click;
             ucDodajStavku.btnDodajStavku.Click += BtnDodajStavku_Click;
+            ucDodajStavku.cbStudio.SelectedIndexChanged += CbStudio_SelectedIndexChanged;
+            ucDodajStavku.txtVremeOd.TextChanged += TxtVremeOd_TextChanged;
+            ucDodajStavku.txtVremeDo.TextChanged += TxtVremeDo_TextChanged;
 
             if (mode == FormMode.Disabled)
             {
@@ -74,7 +80,7 @@ namespace Forme.GuiControllers
                 Enable();
                 ucDodajStavku.btnOmoguciIzmenu.Enabled = true;
                 ucDodajStavku.btnIzmeniStavku.Enabled = false;
-                ucDodajStavku.btnDodajStavku.Enabled = false;
+                ucDodajStavku.btnDodajStavku.Enabled = true;
 
                 SrediFormu(mode);
                 LoadStavka(stavkaToEdit);
@@ -99,6 +105,8 @@ namespace Forme.GuiControllers
             ugovor.StavkeUgovora.RemoveAt(index);
             PostaviStavku(stavka);
             ugovor.StavkeUgovora.Insert(index, stavka);
+            
+            UpdateUgovorUkupnaCena();
 
             currentMode = FormMode.Add;
             Disable();
@@ -107,7 +115,6 @@ namespace Forme.GuiControllers
             ucDodajStavku.btnOmoguciIzmenu.Enabled = false;
             ucDodajStavku.btnIzmeniStavku.Enabled = false;
             
-            // Clear form
             ClearForm();
         }
 
@@ -139,6 +146,8 @@ namespace Forme.GuiControllers
                 throw new Exception("Nema stavki za uklanjanje!");
             }
             ugovor.StavkeUgovora.Remove(stavka);
+            
+            UpdateUgovorUkupnaCena();
         }
 
         private void BtnUkloniStavku_Click(object? sender, EventArgs e)
@@ -158,7 +167,6 @@ namespace Forme.GuiControllers
                 ucDodajStavku.btnOmoguciIzmenu.Enabled = false;
                 ucDodajStavku.btnIzmeniStavku.Enabled = false;
                 
-                // Clear form
                 ClearForm();
             }
             catch (Exception ex)
@@ -177,10 +185,9 @@ namespace Forme.GuiControllers
                 ucDodajStavku.txtIznos.Text = stavkaToEdit.Iznos.ToString();
                 ucDodajStavku.txtCenaPoSatu.Text = stavkaToEdit.CenaPoSatu.ToString();
                 
-                // Try to select studio
                 if (stavkaToEdit.Studio != null && ucDodajStavku.cbStudio.Items.Count > 0)
                 {
-                    ucDodajStavku.cbStudio.SelectedItem = stavkaToEdit.Studio;
+                    ucDodajStavku.cbStudio.SelectedValue = stavkaToEdit.Studio;
                 }
             }
         }
@@ -216,9 +223,11 @@ namespace Forme.GuiControllers
             }
 
             ugovor.StavkeUgovora.Add(stavka);
+            
+            UpdateUgovorUkupnaCena();
+            
             MessageBox.Show("Stavka je uspešno dodata.", "Uspesno", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
-            // Clear form for next entry
             ClearForm();
         }
 
@@ -275,6 +284,7 @@ namespace Forme.GuiControllers
             }
 
             ucDodajStavku.txtIznos.Text = "";
+            UpdateIznos();
         }
 
         private void Validacija(DateTime datum, TimeSpan vremeOd, TimeSpan vremeDo)
@@ -359,7 +369,48 @@ namespace Forme.GuiControllers
             if (s != null)
             {
                 ucDodajStavku.txtCenaPoSatu.Text = s.CenaPoSatu.ToString();
+                UpdateIznos();
             }
+        }
+
+        private void TxtVremeOd_TextChanged(object? sender, EventArgs e)
+        {
+            UpdateIznos();
+        }
+
+        private void TxtVremeDo_TextChanged(object? sender, EventArgs e)
+        {
+            UpdateIznos();
+        }
+
+        private void UpdateIznos()
+        {
+            try
+            {
+                if (TimeSpan.TryParse(ucDodajStavku.txtVremeOd.Text, out TimeSpan vremeOd)
+                    && TimeSpan.TryParse(ucDodajStavku.txtVremeDo.Text, out TimeSpan vremeDo)
+                    && double.TryParse(ucDodajStavku.txtCenaPoSatu.Text, out double cenaPoSatu))
+                {
+                    int brojSati = (vremeDo - vremeOd).Hours;
+                    double iznos = brojSati * cenaPoSatu;
+                    ucDodajStavku.txtIznos.Text = iznos.ToString();
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private void UpdateUgovorUkupnaCena()
+        {
+            if (ugovor == null) return;
+            
+            double ukupnaCena = 0;
+            foreach (var stavka in ugovor.StavkeUgovora)
+            {
+                ukupnaCena += stavka.Iznos;
+            }
+            ugovor.UkupnaCena = ukupnaCena;
         }
     }
 }

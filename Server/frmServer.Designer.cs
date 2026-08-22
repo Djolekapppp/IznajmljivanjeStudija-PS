@@ -69,7 +69,7 @@
             Controls.Add(btnStop);
             Controls.Add(btnStart);
             Name = "frmServer";
-            Text = "Form1";
+            Text = "Server";
             ResumeLayout(false);
             PerformLayout();
         }

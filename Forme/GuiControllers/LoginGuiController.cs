@@ -49,17 +49,22 @@ namespace Forme.GuiControllers
                 {
                     Zaposleni zaposleni = Komunikacija.Instance.Login(frmLogin.txtUsername.Text, frmLogin.txtPassword.Text);
                     frmLogin.Visible = false;
-                    MainCoordinator.Instance.ShowFrmGlavna(zaposleni);
-                } catch(Exception ex)
+                    try
+                    {
+                        MainCoordinator.Instance.ShowFrmGlavna(zaposleni);
+                    } catch
+                    {
+                        MessageBox.Show("Ne moze da se otvori glavna forma i meni", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                } catch
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Korisnicko ime i sifra nisu ispravni", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch
             {
-                MessageBox.Show("Neuspesno povezivanje sa serverom");
+                MessageBox.Show("Neuspesno povezivanje sa serverom", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
     }
 }
