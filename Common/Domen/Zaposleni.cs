@@ -46,7 +46,7 @@ namespace Common.Domen
 
         public override string ToString()
         {
-            return $"{Id}:'{Ime}','{Prezime}','{Username}','{Password}',{Email},{DatumZaposlenja.ToString("yyyy/MM/dd")}";
+            return $"'{Ime} {Prezime}'";
         }
 
     }

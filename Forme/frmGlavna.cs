@@ -26,6 +26,8 @@ namespace Forme
             kreirajBendToolStripMenuItem.Click += MainCoordinator.Instance.ShowDodajBendPanel;
             pretražiBendoveToolStripMenuItem.Click += MainCoordinator.Instance.ShowPretraziBendPanel;
             ubaciTerminDezustvaToolStripMenuItem.Click += MainCoordinator.Instance.ShowUbaciTerminDezurstvaPanel;
+            pretražiUgovoreToolStripMenuItem.Click += MainCoordinator.Instance.ShowPretraziUgovorPanel;
+
         }
 
         public void ChangePanel(Control control)

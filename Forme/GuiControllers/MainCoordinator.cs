@@ -63,5 +63,15 @@ namespace Forme.GuiControllers
         {
             frmGlavna.ChangePanel(KategorijaRestoranaController.Instance.CreateUbaciKategorijaRestorana());
         }
+
+        internal void ShowPretraziUgovorPanel(object? sender, EventArgs e)
+        {
+            frmGlavna.ChangePanel(PretraziUgovoreGuiController.Instance.CreatePretraziUgovor());
+        }
+
+        internal void ShowPromeniUgovorPanel(object? sender, EventArgs e, Ugovor selected_ugovor)
+        {
+            frmGlavna.ChangePanel(KreirajUgovorGuiController.Instance.CreateKreirajUgovor(ulogovaniZaposleni, selected_ugovor));
+        }
     }
 }

@@ -37,6 +37,7 @@
             terminDežurstvaToolStripMenuItem = new ToolStripMenuItem();
             ubaciTerminDezustvaToolStripMenuItem = new ToolStripMenuItem();
             pnlGlavni = new Panel();
+            pretražiUgovoreToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -52,7 +53,7 @@
             // 
             // ugovorToolStripMenuItem
             // 
-            ugovorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { kreirajUgovorToolStripMenuItem });
+            ugovorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { kreirajUgovorToolStripMenuItem, pretražiUgovoreToolStripMenuItem });
             ugovorToolStripMenuItem.Name = "ugovorToolStripMenuItem";
             ugovorToolStripMenuItem.Size = new Size(72, 24);
             ugovorToolStripMenuItem.Text = "Ugovor";
@@ -60,7 +61,7 @@
             // kreirajUgovorToolStripMenuItem
             // 
             kreirajUgovorToolStripMenuItem.Name = "kreirajUgovorToolStripMenuItem";
-            kreirajUgovorToolStripMenuItem.Size = new Size(188, 26);
+            kreirajUgovorToolStripMenuItem.Size = new Size(224, 26);
             kreirajUgovorToolStripMenuItem.Text = "Kreiraj Ugovor";
             // 
             // bendToolStripMenuItem
@@ -73,13 +74,13 @@
             // kreirajBendToolStripMenuItem
             // 
             kreirajBendToolStripMenuItem.Name = "kreirajBendToolStripMenuItem";
-            kreirajBendToolStripMenuItem.Size = new Size(224, 26);
+            kreirajBendToolStripMenuItem.Size = new Size(204, 26);
             kreirajBendToolStripMenuItem.Text = "Kreiraj Bend";
             // 
             // pretražiBendoveToolStripMenuItem
             // 
             pretražiBendoveToolStripMenuItem.Name = "pretražiBendoveToolStripMenuItem";
-            pretražiBendoveToolStripMenuItem.Size = new Size(224, 26);
+            pretražiBendoveToolStripMenuItem.Size = new Size(204, 26);
             pretražiBendoveToolStripMenuItem.Text = "Pretraži Bendove";
             // 
             // terminDežurstvaToolStripMenuItem
@@ -89,10 +90,10 @@
             terminDežurstvaToolStripMenuItem.Size = new Size(137, 24);
             terminDežurstvaToolStripMenuItem.Text = "Termin Dežurstva";
             // 
-            // ubaciToolStripMenuItem
+            // ubaciTerminDezustvaToolStripMenuItem
             // 
-            ubaciTerminDezustvaToolStripMenuItem.Name = "ubaciTerminDezurstvaToolStripMenuItem";
-            ubaciTerminDezustvaToolStripMenuItem.Size = new Size(224, 26);
+            ubaciTerminDezustvaToolStripMenuItem.Name = "ubaciTerminDezustvaToolStripMenuItem";
+            ubaciTerminDezustvaToolStripMenuItem.Size = new Size(248, 26);
             ubaciTerminDezustvaToolStripMenuItem.Text = "Ubaci Termin Dežurstva";
             // 
             // pnlGlavni
@@ -101,6 +102,12 @@
             pnlGlavni.Name = "pnlGlavni";
             pnlGlavni.Size = new Size(982, 622);
             pnlGlavni.TabIndex = 1;
+            // 
+            // pretražiUgovoreToolStripMenuItem
+            // 
+            pretražiUgovoreToolStripMenuItem.Name = "pretražiUgovoreToolStripMenuItem";
+            pretražiUgovoreToolStripMenuItem.Size = new Size(224, 26);
+            pretražiUgovoreToolStripMenuItem.Text = "Pretraži Ugovore";
             // 
             // frmGlavna
             // 
@@ -130,5 +137,6 @@
         private ToolStripMenuItem pretražiBendoveToolStripMenuItem;
         private ToolStripMenuItem terminDežurstvaToolStripMenuItem;
         private ToolStripMenuItem ubaciTerminDezustvaToolStripMenuItem;
+        private ToolStripMenuItem pretražiUgovoreToolStripMenuItem;
     }
 }

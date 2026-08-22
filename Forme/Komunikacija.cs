@@ -247,5 +247,54 @@ namespace Forme
                 throw new Exception(odgovor.Greska);
             }
         }
+
+        internal List<Zaposleni> VratiSveZaposlene()
+        {
+            Zahtev zahtev = new Zahtev()
+            {
+                Operacija = Operacija.VratiSveZaposlene
+            };
+            serializer.Send(zahtev);
+
+            Odgovor odgovor = serializer.Receive<Odgovor>();
+            if (!odgovor.Uspesno)
+            {
+                throw new Exception(odgovor.Greska);
+            }
+            return serializer.ReadType<List<Zaposleni>>(odgovor.Objekat);
+        }
+
+        internal List<Ugovor> VratiListuUgovor(Ugovor ugovor)
+        {
+            Zahtev zahtev = new Zahtev()
+            {
+                Objekat = ugovor,
+                Operacija = Operacija.VratiListuUgovor
+            };
+            serializer.Send(zahtev);
+
+            Odgovor odgovor = serializer.Receive<Odgovor>();
+            if (!odgovor.Uspesno)
+            {
+                throw new Exception(odgovor.Greska);
+            }
+            return serializer.ReadType<List<Ugovor>>(odgovor.Objekat);
+        }
+
+        internal Ugovor PretraziUgovor(Ugovor ugovor)
+        {
+            Zahtev zahtev = new Zahtev()
+            {
+                Objekat = ugovor,
+                Operacija = Operacija.PretraziUgovor
+            };
+            serializer.Send(zahtev);
+            Odgovor odgovor = serializer.Receive<Odgovor>();
+            if (!odgovor.Uspesno)
+            {
+                throw new Exception(odgovor.Greska);
+            }
+            return serializer.ReadType<Ugovor>(odgovor.Objekat);
+        }
     }
 }

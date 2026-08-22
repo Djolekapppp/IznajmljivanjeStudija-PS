@@ -57,6 +57,9 @@ namespace Forme.GuiControllers
                         if (bendovi.Count == 0)
                         {
                             MessageBox.Show("Sistem ne moze da nadje bend", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        } else
+                        {
+                            MessageBox.Show("Sistem je nasao bend", "Uspešno", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     } catch
                     {
@@ -86,14 +89,14 @@ namespace Forme.GuiControllers
                     {
                         MainCoordinator.Instance.ShowPromeniBendPanel(sender, e, selected_bend);
                     }
-                    catch (Exception ex)
+                    catch 
                     {
                         MessageBox.Show("Sistem ne moze da nadje bend", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Niste selektovali bend za brisanje!", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Niste selektovali bend za promenu!", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -114,7 +117,7 @@ namespace Forme.GuiControllers
                     {
                         selected_bend.DeleteCondition = $"WHERE IdBend={selected_bend.Id}";
                         bendovi = Komunikacija.Instance.VratiListuBend(selected_bend);
-                        MessageBox.Show("Sistem je nasao bend", "Uspešno", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Sistem je obrisao bend", "Uspešno", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         VratiBendove();
                     }
                     catch (Exception ex)
@@ -209,12 +212,8 @@ namespace Forme.GuiControllers
             try
             {
                 VratiBendove();
-                if (bendovi.Count == 0)
-                {
-                    MessageBox.Show("Sistem ne moze da nadje bendove po zadatim kriterijumima", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
-            catch (Exception ex)
+            catch 
             {
                 MessageBox.Show("Sistem ne moze da nadje bendove po zadatim kriterijumima", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

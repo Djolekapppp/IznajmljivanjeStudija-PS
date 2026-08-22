@@ -93,6 +93,15 @@ namespace Server
                     case Operacija.UbaciTerminDezurstva:
                         Kontroler.Instance.UbaciTerminDezurstva(serializer.ReadType<TerminDezurstva>(zahtev.Objekat));
                         break;
+                    case Operacija.VratiSveZaposlene:
+                        odgovor.Objekat = Kontroler.Instance.VratiSveZaposlene();
+                        break;
+                    case Operacija.VratiListuUgovor:
+                        odgovor.Objekat = Kontroler.Instance.VratiListuUgovor(serializer.ReadType<Ugovor>(zahtev.Objekat));
+                        break;
+                    case Operacija.PretraziUgovor:
+                        odgovor.Objekat = Kontroler.Instance.PretraziUgovor(serializer.ReadType<Ugovor>(zahtev.Objekat));
+                        break;
 
                 }
             }

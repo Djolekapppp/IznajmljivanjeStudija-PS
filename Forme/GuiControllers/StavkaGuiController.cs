@@ -1,14 +1,13 @@
 ﻿using Common.Domen;
 using Forme.UserControls;
 using Forme.Utils;
-using Microsoft.Identity.Client;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Windows.Forms;
 
 namespace Forme.GuiControllers
 {
@@ -35,16 +34,25 @@ namespace Forme.GuiControllers
         private UCDodajStavku ucDodajStavku;
         private Ugovor ugovor;
         private StavkaUgovora stavka;
+        private FormMode currentMode;
 
         public Control CreateDodajStavku(FormMode mode, Ugovor ugovor = null, StavkaUgovora stavkaToEdit = null)
         {
             this.ugovor = ugovor;
             this.stavka = stavkaToEdit;
+            this.currentMode = mode;
+            
             ucDodajStavku = new UCDodajStavku();
+            ucDodajStavku.btnUkloniStavku.Click -= BtnUkloniStavku_Click;
+            ucDodajStavku.btnOmoguciIzmenu.Click -= BtnOmoguciIzmenu_Click;
+            ucDodajStavku.btnIzmeniStavku.Click -= BtnIzmeniStavku_Click;
+            ucDodajStavku.btnDodajStavku.Click -= BtnDodajStavku_Click;
+
             ucDodajStavku.btnUkloniStavku.Click += BtnUkloniStavku_Click;
             ucDodajStavku.btnOmoguciIzmenu.Click += BtnOmoguciIzmenu_Click;
             ucDodajStavku.btnIzmeniStavku.Click += BtnIzmeniStavku_Click;
             ucDodajStavku.btnDodajStavku.Click += BtnDodajStavku_Click;
+
             if (mode == FormMode.Disabled)
             {
                 Disable();
@@ -55,6 +63,8 @@ namespace Forme.GuiControllers
                 Disable();
                 Enable();
                 ucDodajStavku.btnUkloniStavku.Enabled = false;
+                ucDodajStavku.btnOmoguciIzmenu.Enabled = false;
+                ucDodajStavku.btnIzmeniStavku.Enabled = false;
 
                 SrediFormu(mode);
             }
@@ -62,6 +72,9 @@ namespace Forme.GuiControllers
             {
                 Disable();
                 Enable();
+                ucDodajStavku.btnOmoguciIzmenu.Enabled = true;
+                ucDodajStavku.btnIzmeniStavku.Enabled = false;
+                ucDodajStavku.btnDodajStavku.Enabled = false;
 
                 SrediFormu(mode);
                 LoadStavka(stavkaToEdit);
@@ -72,21 +85,42 @@ namespace Forme.GuiControllers
 
         private void IzmeniStavku(StavkaUgovora stavka)
         {
+            if (ugovor == null)
+            {
+                throw new Exception("Nema ucitanog ugovora!");
+            }
+
             int index = ugovor.StavkeUgovora.IndexOf(stavka);
+            if (index < 0)
+            {
+                throw new Exception("Stavka nije pronađena u ugovoru!");
+            }
+
             ugovor.StavkeUgovora.RemoveAt(index);
             PostaviStavku(stavka);
             ugovor.StavkeUgovora.Insert(index, stavka);
+
+            currentMode = FormMode.Add;
+            Disable();
+            Enable();
+            ucDodajStavku.btnUkloniStavku.Enabled = false;
+            ucDodajStavku.btnOmoguciIzmenu.Enabled = false;
+            ucDodajStavku.btnIzmeniStavku.Enabled = false;
+            
+            // Clear form
+            ClearForm();
         }
+
         private void BtnIzmeniStavku_Click(object? sender, EventArgs e)
         {
             try
             {
                 IzmeniStavku(stavka);
+                MessageBox.Show("Stavka je uspešno izmenjena.", "Uspesno", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
         }
 
@@ -95,17 +129,18 @@ namespace Forme.GuiControllers
             Enable();
             ucDodajStavku.btnOmoguciIzmenu.Enabled = false;
             ucDodajStavku.btnIzmeniStavku.Enabled = true;
+            ucDodajStavku.btnDodajStavku.Enabled = false;
         }
 
         private void UkloniStavku(StavkaUgovora stavka)
         {
             if (ugovor == null || ugovor.StavkeUgovora.Count == 0)
             {
-                MessageBox.Show("Nema stavki za uklanjanje!", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                throw new Exception("Nema stavki za uklanjanje!");
             }
             ugovor.StavkeUgovora.Remove(stavka);
         }
+
         private void BtnUkloniStavku_Click(object? sender, EventArgs e)
         {
             var confirm = MessageBox.Show("Da li ste sigurni da zelite da obrisete izabranu stavku?", "Potvrda", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -114,24 +149,50 @@ namespace Forme.GuiControllers
             try
             {
                 UkloniStavku(stavka);
+                MessageBox.Show("Stavka je uspešno obrisana.", "Uspesno", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                currentMode = FormMode.Add;
+                Disable();
+                Enable();
+                ucDodajStavku.btnUkloniStavku.Enabled = false;
+                ucDodajStavku.btnOmoguciIzmenu.Enabled = false;
+                ucDodajStavku.btnIzmeniStavku.Enabled = false;
+                
+                // Clear form
+                ClearForm();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        
         }
 
         private void LoadStavka(StavkaUgovora stavkaToEdit)
         {
-            ucDodajStavku.cbStudio.SelectedValue = stavkaToEdit.Studio.Id;
-            ucDodajStavku.txtDatum.Text = stavkaToEdit.Datum.ToString("dd/MM/yyyy");
-            ucDodajStavku.txtVremeOd.Text = stavkaToEdit.VremeOd.ToString(@"hh\:mm\:ss");
-            ucDodajStavku.txtVremeDo.Text = stavkaToEdit.VremeDo.ToString(@"hh\:mm\:ss");
-            ucDodajStavku.txtIznos.Text = stavkaToEdit.Iznos.ToString();
-            Disable();
-            ucDodajStavku.btnOmoguciIzmenu.Enabled = true;
-            ucDodajStavku.btnUkloniStavku.Enabled = true;
+            if (stavkaToEdit != null)
+            {
+                ucDodajStavku.txtDatum.Text = stavkaToEdit.Datum.ToString("dd/MM/yyyy");
+                ucDodajStavku.txtVremeOd.Text = stavkaToEdit.VremeOd.ToString(@"hh\:mm\:ss");
+                ucDodajStavku.txtVremeDo.Text = stavkaToEdit.VremeDo.ToString(@"hh\:mm\:ss");
+                ucDodajStavku.txtIznos.Text = stavkaToEdit.Iznos.ToString();
+                ucDodajStavku.txtCenaPoSatu.Text = stavkaToEdit.CenaPoSatu.ToString();
+                
+                // Try to select studio
+                if (stavkaToEdit.Studio != null && ucDodajStavku.cbStudio.Items.Count > 0)
+                {
+                    ucDodajStavku.cbStudio.SelectedItem = stavkaToEdit.Studio;
+                }
+            }
+        }
+
+        private void ClearForm()
+        {
+            ucDodajStavku.txtDatum.Text = "";
+            ucDodajStavku.txtVremeOd.Text = "";
+            ucDodajStavku.txtVremeDo.Text = "";
+            ucDodajStavku.txtIznos.Text = "";
+            ucDodajStavku.txtCenaPoSatu.Text = "";
+            ucDodajStavku.cbStudio.SelectedIndex = -1;
         }
 
         private void BtnDodajStavku_Click(object? sender, EventArgs e)
@@ -140,7 +201,7 @@ namespace Forme.GuiControllers
             
             try
             {
-                PostaviStavku(stavka); 
+                PostaviStavku(stavka);
             }
             catch (Exception ex)
             {
@@ -148,7 +209,17 @@ namespace Forme.GuiControllers
                 return;
             }
 
+            if (ugovor == null)
+            {
+                MessageBox.Show("Nema ucitanog ugovora!", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             ugovor.StavkeUgovora.Add(stavka);
+            MessageBox.Show("Stavka je uspešno dodata.", "Uspesno", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
+            // Clear form for next entry
+            ClearForm();
         }
 
         private void Disable()
@@ -180,24 +251,24 @@ namespace Forme.GuiControllers
         {
             try
             {
-                if (ugovor != null)
+                if (ugovor != null && ugovor.Bend != null)
                 {
                     ucDodajStavku.cbStudio.DataSource = Komunikacija.Instance.VratiSveStudije()
                         .Where(s => s.Kapacitet >= ugovor.Bend.BrojClanova).ToList();
+                    ucDodajStavku.cbStudio.DisplayMember = "Naziv";
+                    ucDodajStavku.cbStudio.ValueMember = "Id";
                 }
-                ucDodajStavku.cbStudio.DisplayMember = "Naziv";
-                ucDodajStavku.cbStudio.ValueMember = "Id";
                 ucDodajStavku.cbStudio.SelectedIndex = -1;
-                ucDodajStavku.cbStudio.SelectedIndexChanged += CbStudio_SelectedIndexChanged;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Greska pri ucitavanju studija: " + ex.Message, "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
             if (ugovor == null || ugovor.Id == 0)
             {
                 ucDodajStavku.txtIdUgovor.Text = "-";
-            } 
+            }
             else
             {
                 ucDodajStavku.txtIdUgovor.Text = ugovor.Id.ToString();
@@ -238,17 +309,18 @@ namespace Forme.GuiControllers
                 throw new Exception("Termin mora biti između 08:00 i 22:00.");
             }
         }
-        
 
         private void PostaviStavku(StavkaUgovora stavka)
         {
             if (DateTime.TryParseExact(ucDodajStavku.txtDatum.Text, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime datum))
             {
                 stavka.Datum = datum;
-            } else
-            {
-                throw new Exception("Pogreno unet datum! (dd/MM/yyyy)");
             }
+            else
+            {
+                throw new Exception("Pogrešno unet datum! (dd/MM/yyyy)");
+            }
+
             if (TimeSpan.TryParse(ucDodajStavku.txtVremeOd.Text, out TimeSpan vremeOd)
                 && TimeSpan.TryParse(ucDodajStavku.txtVremeDo.Text, out TimeSpan vremeDo))
             {
@@ -267,6 +339,7 @@ namespace Forme.GuiControllers
                     double iznos = (double)(brojSati * s.CenaPoSatu);
                     stavka.Iznos = iznos;
 
+                    if (ugovor != null) stavka.IdUgovor = ugovor.Id;
                 }
                 else
                 {

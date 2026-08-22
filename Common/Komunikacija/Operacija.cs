@@ -19,6 +19,9 @@ namespace Common.Komunikacija
         VratiListuBend,
         PromeniBend,
         ObrisiBend,
-        UbaciTerminDezurstva
+        UbaciTerminDezurstva,
+        VratiSveZaposlene,
+        VratiListuUgovor,
+        PretraziUgovor
     }
 }

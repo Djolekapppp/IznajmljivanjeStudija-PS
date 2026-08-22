@@ -12,7 +12,7 @@ namespace Common.Domen
     {
         public int Id { get; set; }
         public DateTime DatumSklapanja { get; set; }
-        public Status Status { get; set; } //Enum Status treba da bude, samo da saznam sta sve moze status da bude
+        public Status Status { get; set; } 
         public Zaposleni Zaposleni { get; set; }
         public Bend Bend { get; set; }
         public BindingList<StavkaUgovora> StavkeUgovora { get; set; } = new BindingList<StavkaUgovora>();

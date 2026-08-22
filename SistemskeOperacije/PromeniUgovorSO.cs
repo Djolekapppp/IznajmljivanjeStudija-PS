@@ -22,7 +22,7 @@ namespace SistemskeOperacije
 
             foreach (var stavka in oldStavke)
             {
-                stavka.DeleteCondition = $"WHERE RB = {stavka.RB} AND IdUgovora = {stavka.IdUgovor}";
+                stavka.DeleteCondition = $"WHERE RB = {stavka.RB} AND IdUgovor = {stavka.IdUgovor}";
                 broker.DeleteEntity(stavka);
             }
 
@@ -42,6 +42,7 @@ namespace SistemskeOperacije
                         
                 }
             }
+            ugovor.UpdateCondition = "WHERE IdUgovor = " + ugovor.Id;
             broker.UpdateByCondition(ugovor);
         }
     }

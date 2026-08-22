@@ -107,5 +107,26 @@ namespace Server
             UbaciTerminDezurstvaSO so = new UbaciTerminDezurstvaSO(terminDezurstva);
             so.ExecuteTemplate();
         }
+
+        internal List<Zaposleni> VratiSveZaposlene()
+        {
+            VratiSveZaposleneSO so = new VratiSveZaposleneSO();
+            so.ExecuteTemplate();
+            return so.Result;
+        }
+
+        internal List<Ugovor> VratiListuUgovor(Ugovor ugovor)
+        {
+            VratiListuUgovorSO so = new VratiListuUgovorSO(ugovor);
+            so.ExecuteTemplate();
+            return so.Result;
+        }
+
+        internal object PretraziUgovor(Ugovor ugovor)
+        {
+            PretraziUgovorSO so = new PretraziUgovorSO(ugovor);
+            so.ExecuteTemplate();
+            return so.Result;
+        }
     }
 }
